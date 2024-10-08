@@ -1,11 +1,8 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 
-#include <sstream>
+#include <string>
 
-/**
- * This tutorial demonstrates simple sending of messages over the ROS system.
- */
 int main(int argc, char **argv)
 {
   /**
@@ -53,19 +50,15 @@ int main(int argc, char **argv)
    * a unique string for each message.
    */
   int count = 0;
+  std_msgs::String msg;
+  
   while (ros::ok())
   {
     /**
      * This is a message object. You stuff it with data, and then publish it.
      */
-    std_msgs::String msg;
-
-    std::stringstream ss;
-    ss << "hello world " << count;
-    msg.data = ss.str();
-
+    msg.data = "hello world! " + std::to_string(count);
     ROS_INFO("%s", msg.data.c_str());
-
     /**
      * The publish() function is how you send messages. The parameter
      * is the message object. The type of this object must agree with the type
@@ -73,9 +66,7 @@ int main(int argc, char **argv)
      * in the constructor above.
      */
     chatter_pub.publish(msg);
-
     ros::spinOnce();
-
     loop_rate.sleep();
     ++count;
   }
